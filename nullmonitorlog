@@ -1,0 +1,53 @@
+[2018/02/08 10:19:52:292][com.intel.wy.testcases.TestChildStrategy]
+[2018/02/08 10:19:52:313][com.intel.wy.testcases.TestChildStrategy][message][main]TaskTracker is running...
+[2018/02/08 10:19:53:321][com.intel.wy.testcases.TestChildStrategy][message]start taskRunner!
+[2018/02/08 10:19:53:833][com.intel.wy.testcases.TestChildStrategy][message]complete TaskRunner init!
+[2018/02/08 10:19:53:834][com.intel.wy.testcases.TestChildStrategy][message][jvmtask]prepare to start next split task in the JVM:1
+[2018/02/08 10:19:54:334][com.intel.wy.testcases.TestChildStrategy][error]we cann't find the JVM which you want to send to,maybe the JVM has been destroyed 
+[2018/02/08 10:19:54:334][com.intel.wy.testcases.TestChildStrategy][message][TaskRunner]assign new task, thename is:com.intel.developer.extend.myextend1
+[2018/02/08 10:34:21:701][com.intel.wy.testcases.TestChildStrategy][message][main]TaskTracker is running...
+[2018/02/08 10:34:22:715][com.intel.wy.testcases.TestChildStrategy][message]start taskRunner!
+[2018/02/08 10:34:23:221][com.intel.wy.testcases.TestChildStrategy][message]complete TaskRunner init!
+[2018/02/08 10:34:23:222][com.intel.wy.testcases.TestChildStrategy][message][jvmtask]prepare to start next split task in the JVM:1
+[2018/02/08 10:34:23:721][com.intel.wy.testcases.TestChildStrategy][error]we cann't find the JVM which you want to send to,maybe the JVM has been destroyed 
+[2018/02/08 10:34:23:721][com.intel.wy.testcases.TestChildStrategy][message][TaskRunner]assign new task, thename is:com.intel.developer.extend.myextend1
+[2018/02/08 10:35:15:262][com.intel.fangpei.terminal.Node][message][main]TaskTracker is running...
+[2018/02/08 10:35:16:266][com.intel.fangpei.terminal.Node][message]return default childstrategy
+[2018/02/08 10:35:16:276][com.intel.fangpei.terminal.Node][message]start taskRunner!
+[2018/02/08 10:35:16:280][com.intel.fangpei.terminal.Node][message]start taskRunner!
+[2018/02/08 10:35:16:801][com.intel.fangpei.terminal.Node][message]complete TaskRunner init!
+[2018/02/08 10:35:16:805][com.intel.fangpei.terminal.Node][message]complete TaskRunner init!
+[2018/02/08 10:35:16:808][com.intel.fangpei.terminal.Node][message][jvmtask]prepare to start next split task in the JVM:2
+[2018/02/08 10:35:16:816][com.intel.fangpei.terminal.Node][message][jvmtask]prepare to start next split task in the JVM:1
+[2018/02/08 10:35:17:301][com.intel.fangpei.terminal.Node][error]we cann't find the JVM which you want to send to,maybe the JVM has been destroyed 
+[2018/02/08 10:35:17:301][com.intel.fangpei.terminal.Node][message][TaskRunner]assign new task, thename is:com.intel.developer.extend.myextend
+[2018/02/08 10:35:17:305][com.intel.fangpei.terminal.Node][error]we cann't find the JVM which you want to send to,maybe the JVM has been destroyed 
+[2018/02/08 10:35:17:305][com.intel.fangpei.terminal.Node][message][TaskRunner]assign new task, thename is:com.intel.developer.extend.myextend
+[2018/02/08 10:35:17:308][com.intel.fangpei.terminal.Node][message][jvmtask]prepare to start next split task in the JVM:2
+[2018/02/08 10:35:17:316][com.intel.fangpei.terminal.Node][message][jvmtask]prepare to start next split task in the JVM:1
+[2018/02/08 10:35:17:801][com.intel.fangpei.terminal.Node][error]we cann't find the JVM which you want to send to,maybe the JVM has been destroyed 
+[2018/02/08 10:35:17:801][com.intel.fangpei.terminal.Node][message][TaskRunner]assign new task, thename is:break
+[2018/02/08 10:35:17:805][com.intel.fangpei.terminal.Node][error]we cann't find the JVM which you want to send to,maybe the JVM has been destroyed 
+[2018/02/08 10:35:17:805][com.intel.fangpei.terminal.Node][message][TaskRunner]assign new task, thename is:break
+[2018/02/08 10:37:00:579][com.intel.wy.testcases.TestNodeTaskManager][message][main]TaskTracker is running...
+[2018/02/08 10:37:01:618][com.intel.wy.testcases.TestNodeTaskManager][message]start taskRunner!
+[2018/02/08 10:37:02:123][com.intel.wy.testcases.TestNodeTaskManager][message][jvmtask]prepare to start next split task in the JVM:1
+[2018/02/08 10:37:02:622][com.intel.wy.testcases.TestNodeTaskManager][message]complete TaskRunner init!
+[2018/02/08 10:37:02:622][com.intel.wy.testcases.TestNodeTaskManager][message][jvmtask]prepare to start next split task in the JVM:2
+[2018/02/08 10:37:02:675][com.intel.wy.testcases.TestNodeTaskManager][message]start taskRunner!
+[2018/02/08 10:37:03:122][com.intel.wy.testcases.TestNodeTaskManager][error]we cann't find the JVM which you want to send to,maybe the JVM has been destroyed 
+[2018/02/08 10:37:03:122][com.intel.wy.testcases.TestNodeTaskManager][message][TaskRunner]assign new task, thename is:com.intel.developer.extend.wyextend2
+[2018/02/08 10:37:03:122][com.intel.wy.testcases.TestNodeTaskManager][error]we cann't find the JVM which you want to send to,maybe the JVM has been destroyed 
+[2018/02/08 10:37:03:122][com.intel.wy.testcases.TestNodeTaskManager][message][TaskRunner]assign new task, thename is:com.intel.developer.extend.wyextend
+[2018/02/08 10:37:03:176][com.intel.wy.testcases.TestNodeTaskManager][message][jvmtask]prepare to start next split task in the JVM:3
+[2018/02/08 10:37:03:675][com.intel.wy.testcases.TestNodeTaskManager][message]start taskRunner!
+[2018/02/08 10:37:03:676][com.intel.wy.testcases.TestNodeTaskManager][message]complete TaskRunner init!
+[2018/02/08 10:37:03:676][com.intel.wy.testcases.TestNodeTaskManager][message][jvmtask]prepare to start next split task in the JVM:4
+[2018/02/08 10:37:04:175][com.intel.wy.testcases.TestNodeTaskManager][message]complete TaskRunner init!
+[2018/02/08 10:37:04:175][com.intel.wy.testcases.TestNodeTaskManager][message][jvmtask]prepare to start next split task in the JVM:5
+[2018/02/08 10:37:04:176][com.intel.wy.testcases.TestNodeTaskManager][error]we cann't find the JVM which you want to send to,maybe the JVM has been destroyed 
+[2018/02/08 10:37:04:176][com.intel.wy.testcases.TestNodeTaskManager][message][TaskRunner]assign new task, thename is:com.intel.developer.extend.wyextend3
+[2018/02/08 10:37:04:176][com.intel.wy.testcases.TestNodeTaskManager][error]we cann't find the JVM which you want to send to,maybe the JVM has been destroyed 
+[2018/02/08 10:37:04:176][com.intel.wy.testcases.TestNodeTaskManager][message][TaskRunner]assign new task, thename is:com.intel.developer.extend.wyextend4
+[2018/02/08 10:37:04:675][com.intel.wy.testcases.TestNodeTaskManager][error]we cann't find the JVM which you want to send to,maybe the JVM has been destroyed 
+[2018/02/08 10:37:04:675][com.intel.wy.testcases.TestNodeTaskManager][message][TaskRunner]assign new task, thename is:com.intel.developer.extend.wyextend5
