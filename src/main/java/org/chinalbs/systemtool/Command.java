@@ -1,14 +1,24 @@
 package org.chinalbs.systemtool;
 
+import org.chinalbs.systemtool.bean.Top;
 import org.hyperic.sigar.cmd.Free;
 import sun.plugin2.gluegen.runtime.CPU;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /*
 Create by jiangyun on 2018/2/11
 */
 public class Command {
+
+    private static Map<String, String> shellParams;
+    private static String username;
+    private static int port;
+    private static List<Shell> hosts;
+    private static String ipParams;
+    private static String password;
 
     private static final String TOP = "top";
     private static final String LS = "ls";
@@ -19,20 +29,60 @@ public class Command {
     private static final String PWD = "pwd";
     private static final String DU = "du";
 
+    static {
+        shellParams = ShellConf.getShellParams();
+        ipParams = shellParams.get("ip");
+        port = Integer.parseInt(shellParams.get("port"));
+        username = shellParams.get("username");
+        password = shellParams.get("password");
+    }
 
-    private static Shell judgeCommand(Shell shell, String command) {
+
+    private static List<Shell> getHostInstances() {
+        hosts = new ArrayList<Shell>(10);
+        String[] ips = ipParams.split(",");
+        for (String ip : ips) {
+
+            Shell shell = new Shell(ip, username, password, port);
+            hosts.add(shell);
+
+        }
+
+        return hosts;
+
+    }
+
+    public static int execute(String command) {
+        int returnCode = 0;
+        hosts = getHostInstances();
+        for (Shell shell : hosts) {
+          shell.execute(command);
+
+            ArrayList<String> standardOutput = shell.getStandardOutput();
+            int lineNumber = 0;
+            for (String s : standardOutput) {
+                System.out.print("line " + (++lineNumber) + "\t");
+                System.out.println(s);
+            }
+        }
+
+        return returnCode;
+    }
+
+
+    public static Shell judgeCommand(Shell shell, String command) {
         if (null == command || "" == command) {
             throw new IllegalArgumentException("linux 命令不能为空");
         }
         if (command.startsWith(TOP)) {
             execTop(shell, command);
         }
-        return null;
+        return shell;
     }
 
-    private static Shell execTop(Shell shell, String command) {
-        shell.execute(command);
-        ArrayList<String> standardOutput = shell.getStandardOutput();
+    private static int execTop(Shell shell, String command) {
+
+        ArrayList<String> standardOutput = shell.execute(command);
         String line1 = standardOutput.get(0);
         String line2 = standardOutput.get(1);
         String line3 = standardOutput.get(2);
@@ -55,7 +105,7 @@ public class Command {
         int stoppedTasks = Integer.parseInt(line2s[3].replace("stopped", "").trim());
         int zombieTasks = Integer.parseInt(line2s[4].replace("zombie", "").trim());
 
-
+        ;
         String[] line3s = line3.split(",");
         Double userSpacePercentageOfCPU = Double.parseDouble(line3s[0].split(":")[1].replace("us", "").trim());
         Double percentageOfCPUSpaceUsedByKernelSpace = Double.parseDouble(line3s[1].replace("sy", "").trim());
@@ -69,16 +119,25 @@ public class Command {
         int totalPhysicalMemory = Integer.parseInt(line4s[0].split(":")[1].replace("total", "").trim());
         int freeMemoryTotal = Integer.parseInt(line4s[1].replace("free", "").trim());
         int inUseOfMemory = Integer.parseInt(line4s[2].replace("used", "").trim());
-        int cachedMemory = Integer.parseInt(line4s[3].replace("buff/cache","").trim());
+        int cachedMemory = Integer.parseInt(line4s[3].replace("buff/cache", "").trim());
 
 
         String[] line5s = line5.split(",");
-        int swapTotal = Integer.parseInt(line5s[0].split(":")[1].replace("total","").trim());
-        int swapFree = Integer.parseInt(line5s[1].replace("free","").trim());
-        int swapUsed = Integer.parseInt(line5s[2].replace("used","").trim());
+        int swapTotal = Integer.parseInt(line5s[0].split(":")[1].replace("total", "").trim());
+        int swapFree = Integer.parseInt(line5s[1].replace("free", "").trim());
+        int swapUsed = Integer.parseInt(line5s[2].split(".")[0].replace("used", "").trim());
+        int swapAvailMem = Integer.parseInt(line5s[2].split(".")[1].replace("avail Mem", "").trim());
 
 
-        return shell;
+        Top systemInfo = new Top(systemBootTime, numberOfUsers, loadAverageOneMinute,
+                loadAverageFiveMinute, loadAverageFifteenMinute, totalTasks, runningTasks, sleepingTasks,
+                stoppedTasks, zombieTasks, userSpacePercentageOfCPU, percentageOfCPUSpaceUsedByKernelSpace,
+                changeThePriorityOfThePercentageOfCPUProcess, idleCPUPercentage, percentageOfIOWaitingForCPU,
+                hardwareIRQ, softwareInterrupts, totalPhysicalMemory, freeMemoryTotal, inUseOfMemory, cachedMemory,
+                swapTotal, swapFree, swapUsed,
+                swapAvailMem);
+        System.out.println(systemInfo);
+        return 1;
     }
 
     private static Shell execLs(Shell shell, String command) {
@@ -123,6 +182,14 @@ public class Command {
         return shell;
     }
 
+    public static void main(String[] args) {
+
+        List<Shell> hostInstances = getHostInstances();
+        for (Shell shell:hostInstances){
+            execTop(shell,"top -bcn 1");
+        }
+
+    }
 }
 
 
