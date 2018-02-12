@@ -1,6 +1,8 @@
 package org.chinalbs.systemtool;
 
+import org.apache.commons.lang.StringUtils;
 import org.chinalbs.systemtool.bean.Top;
+import org.chinalbs.systemtool.bean.TopInfo;
 import org.hyperic.sigar.cmd.Free;
 import sun.plugin2.gluegen.runtime.CPU;
 
@@ -29,6 +31,9 @@ public class Command {
     private static final String PWD = "pwd";
     private static final String DU = "du";
 
+    private static List<String> info;
+    private static List<TopInfo> topInfobeans;
+
     static {
         shellParams = ShellConf.getShellParams();
         ipParams = shellParams.get("ip");
@@ -53,8 +58,7 @@ public class Command {
     }
 
 
-
-    public static String execute( String command) {
+    public static String execute(String command) {
         List<Shell> hostInstances = getHostInstances();
         for (Shell shell : hostInstances) {
             judgeCommandAndRun(shell, command);
@@ -76,6 +80,8 @@ public class Command {
     private static int execTop(Shell shell, String command) {
 
         ArrayList<String> standardOutput = shell.execute(command);
+        List<TopInfo> topInfos = new ArrayList<TopInfo>(30);
+        String topInfo = "";
         String line1 = standardOutput.get(0);
         String line2 = standardOutput.get(1);
         String line3 = standardOutput.get(2);
@@ -131,12 +137,50 @@ public class Command {
                 swapTotal, swapFree, swapUsed,
                 swapAvailMem);
         System.out.println(systemInfo.toStringZH());
+
+        topInfobeans = new ArrayList<TopInfo>(30);
+        for (int i = 7; i <=17; i++) {
+            topInfo = standardOutput.get(i);
+            String[] split = topInfo.replace("  ", " ").trim().split(" ");
+            info = new ArrayList<String>(10);
+            for (int j = 0; j < split.length; j++) {
+                if ((" " != split[j]) && (split[j].length() != 0) && ("    " != split[j])) {
+                    info.add(split[j]);
+                }
+            }
+
+
+            if (info.size() == 12) {
+
+                TopInfo topInfobean = new TopInfo(
+                        info.get(0).trim(),
+                        info.get(1).trim(),
+                        info.get(2).trim(),
+                        info.get(3).trim(),
+                        info.get(4).trim(),
+                        info.get(5).trim(),
+                        info.get(6).trim(),
+                        info.get(7).trim(),
+                        info.get(8).trim(),
+                        info.get(9).trim(),
+                        info.get(10).trim(),
+                        info.get(11).trim()
+                );
+                topInfos.add(topInfobean);
+
+            }
+
+        }
+
+        for (TopInfo ti:topInfos){
+            System.out.println(ti);
+        }
+        System.err.println(topInfos.size());
         return 1;
     }
 
     private static Shell execLs(Shell shell, String command) {
-        shell.execute(command);
-        ArrayList<String> standardOutput = shell.getStandardOutput();
+        ArrayList<String> outPut = shell.execute(command);
         return shell;
     }
 
@@ -178,7 +222,7 @@ public class Command {
 
     public static void main(String[] args) {
 
-execute("top -bcn 1");
+        execute("top -bcn 1");
     }
 }
 
