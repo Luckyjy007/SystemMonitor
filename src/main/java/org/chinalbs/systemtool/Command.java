@@ -1,8 +1,7 @@
 package org.chinalbs.systemtool;
 
 import org.apache.commons.lang.StringUtils;
-import org.chinalbs.systemtool.bean.Top;
-import org.chinalbs.systemtool.bean.TopInfo;
+import org.chinalbs.systemtool.bean.*;
 import org.hyperic.sigar.cmd.Free;
 import sun.plugin2.gluegen.runtime.CPU;
 
@@ -58,26 +57,31 @@ public class Command {
     }
 
 
-    public static String execute(String command) {
+    public static List<BasicReturn> execute(String command) {
+        List<BasicReturn> basicReturnList = new ArrayList<BasicReturn>(3);
         List<Shell> hostInstances = getHostInstances();
         for (Shell shell : hostInstances) {
-            judgeCommandAndRun(shell, command);
+            BasicReturn basicReturn = judgeCommandAndRun(shell, command);
+            basicReturnList.add(basicReturn);
         }
 
-        return "";
+        return basicReturnList;
     }
 
-    public static Shell judgeCommandAndRun(Shell shell, String command) {
+    public static BasicReturn judgeCommandAndRun(Shell shell, String command) {
+        BasicReturn basicReturn = null;
         if (null == command || "" == command) {
             throw new IllegalArgumentException("linux 命令不能为空");
         }
         if (command.startsWith(TOP)) {
-            execTop(shell, command);
+            basicReturn = execTop(shell, command);
+        } else if (command.startsWith(LS)) {
+            basicReturn = execLs(shell, command);
         }
-        return shell;
+        return basicReturn;
     }
 
-    private static int execTop(Shell shell, String command) {
+    private static TopAll execTop(Shell shell, String command) {
 
         ArrayList<String> standardOutput = shell.execute(command);
         List<TopInfo> topInfos = new ArrayList<TopInfo>(30);
@@ -136,10 +140,10 @@ public class Command {
                 hardwareIRQ, softwareInterrupts, totalPhysicalMemory, freeMemoryTotal, inUseOfMemory, cachedMemory,
                 swapTotal, swapFree, swapUsed,
                 swapAvailMem);
-        System.out.println(systemInfo.toStringZH());
+        //  System.out.println(systemInfo.toStringZH());
 
         topInfobeans = new ArrayList<TopInfo>(30);
-        for (int i = 7; i <=17; i++) {
+        for (int i = 7; i <= 17; i++) {
             topInfo = standardOutput.get(i);
             String[] split = topInfo.replace("  ", " ").trim().split(" ");
             info = new ArrayList<String>(10);
@@ -172,16 +176,21 @@ public class Command {
 
         }
 
-        for (TopInfo ti:topInfos){
-            System.out.println(ti);
-        }
-        System.err.println(topInfos.size());
-        return 1;
+        return new TopAll(systemInfo, topInfos);
     }
 
-    private static Shell execLs(Shell shell, String command) {
+    private static BasicReturn execLs(Shell shell, String command) {
         ArrayList<String> outPut = shell.execute(command);
-        return shell;
+        List<String> allDirectoryFile = new ArrayList<String>(50);
+        for (int i = 0; i < outPut.size(); i++) {
+            String s = outPut.get(i);
+            String[] split = s.replace(" ", " ").trim().split(" ");
+            for (int j = 0; j < split.length; j++) {
+                allDirectoryFile.add(split[j]);
+            }
+        }
+        System.out.println(allDirectoryFile);
+        return new LsAll(allDirectoryFile);
     }
 
     private static Shell execLL(Shell shell, String command) {
@@ -222,7 +231,7 @@ public class Command {
 
     public static void main(String[] args) {
 
-        execute("top -bcn 1");
+
     }
 }
 
