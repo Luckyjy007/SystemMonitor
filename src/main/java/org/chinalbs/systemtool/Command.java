@@ -52,25 +52,18 @@ public class Command {
 
     }
 
-    public static int execute(String command) {
-        int returnCode = 0;
-        hosts = getHostInstances();
-        for (Shell shell : hosts) {
-          shell.execute(command);
 
-            ArrayList<String> standardOutput = shell.getStandardOutput();
-            int lineNumber = 0;
-            for (String s : standardOutput) {
-                System.out.print("line " + (++lineNumber) + "\t");
-                System.out.println(s);
-            }
+
+    public static String execute( String command) {
+        List<Shell> hostInstances = getHostInstances();
+        for (Shell shell : hostInstances) {
+            judgeCommandAndRun(shell, command);
         }
 
-        return returnCode;
+        return "";
     }
 
-
-    public static Shell judgeCommand(Shell shell, String command) {
+    public static Shell judgeCommandAndRun(Shell shell, String command) {
         if (null == command || "" == command) {
             throw new IllegalArgumentException("linux 命令不能为空");
         }
@@ -105,7 +98,7 @@ public class Command {
         int stoppedTasks = Integer.parseInt(line2s[3].replace("stopped", "").trim());
         int zombieTasks = Integer.parseInt(line2s[4].replace("zombie", "").trim());
 
-        ;
+
         String[] line3s = line3.split(",");
         Double userSpacePercentageOfCPU = Double.parseDouble(line3s[0].split(":")[1].replace("us", "").trim());
         Double percentageOfCPUSpaceUsedByKernelSpace = Double.parseDouble(line3s[1].replace("sy", "").trim());
@@ -125,8 +118,9 @@ public class Command {
         String[] line5s = line5.split(",");
         int swapTotal = Integer.parseInt(line5s[0].split(":")[1].replace("total", "").trim());
         int swapFree = Integer.parseInt(line5s[1].replace("free", "").trim());
-        int swapUsed = Integer.parseInt(line5s[2].split(".")[0].replace("used", "").trim());
-        int swapAvailMem = Integer.parseInt(line5s[2].split(".")[1].replace("avail Mem", "").trim());
+        String[] useds = line5s[2].split("used.");
+        int swapUsed = Integer.parseInt(useds[0].trim());
+        int swapAvailMem = Integer.parseInt(useds[1].replace("avail Mem", "").trim());
 
 
         Top systemInfo = new Top(systemBootTime, numberOfUsers, loadAverageOneMinute,
@@ -136,7 +130,7 @@ public class Command {
                 hardwareIRQ, softwareInterrupts, totalPhysicalMemory, freeMemoryTotal, inUseOfMemory, cachedMemory,
                 swapTotal, swapFree, swapUsed,
                 swapAvailMem);
-        System.out.println(systemInfo);
+        System.out.println(systemInfo.toStringZH());
         return 1;
     }
 
@@ -184,11 +178,7 @@ public class Command {
 
     public static void main(String[] args) {
 
-        List<Shell> hostInstances = getHostInstances();
-        for (Shell shell:hostInstances){
-            execTop(shell,"top -bcn 1");
-        }
-
+execute("top -bcn 1");
     }
 }
 
