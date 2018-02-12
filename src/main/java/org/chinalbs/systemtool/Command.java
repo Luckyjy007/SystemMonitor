@@ -230,6 +230,19 @@ public class Command {
     }
 
     public static void main(String[] args) {
+        List<BasicReturn> execute = execute("top -bcn 1");
+        for (BasicReturn basicReturn:execute) {
+            basicReturn=(TopAll)basicReturn;
+            Top top = ((TopAll) basicReturn).getTop();
+            List<TopInfo> topInfobeans = ((TopAll) basicReturn).getTopInfobeans();
+            System.out.println("---------------------------------------------");
+            System.out.println("---------------------------------------------");
+            System.out.println("---------------------------------------------");
+            System.out.println(top.toStringZH());
+            for (TopInfo topInfobean : topInfobeans) {
+                System.out.println(topInfobean.toStringZH());
+            }
+        }
 
 
     }
