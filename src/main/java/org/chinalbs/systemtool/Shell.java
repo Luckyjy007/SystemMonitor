@@ -2,6 +2,7 @@ package org.chinalbs.systemtool;
 
 import com.jcraft.jsch.*;
 import org.apache.commons.io.IOUtils;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -14,6 +15,8 @@ Create by jiangyun on 2018/2/8
 */
 public class Shell {
 
+
+    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(Shell.class);
     //远程主机的ip地址
     private String ip;
     //远程主机登录用户名
@@ -21,7 +24,7 @@ public class Shell {
     //远程主机的登录密码
     private String password;
     //设置ssh连接的远程端口
-    public static final int DEFAULT_SSH_PORT = 22;
+    private int port = 22;
     //保存输出内容的容器
     private ArrayList<String> stdout;
     private Properties config;
@@ -33,6 +36,15 @@ public class Shell {
      * @param username
      * @param password
      */
+    public Shell(final String ip, final String username, final String password, final int port) {
+        this.ip = ip;
+        this.username = username;
+        this.password = password;
+        stdout = new ArrayList<String>();
+        this.config = new Properties();
+        this.port = port;
+    }
+
     public Shell(final String ip, final String username, final String password) {
         this.ip = ip;
         this.username = username;
@@ -55,12 +67,12 @@ public class Shell {
 
         try {
             //创建session并且打开连接，因为创建session之后要主动打开连接
-            Session session = jsch.getSession(username, ip, DEFAULT_SSH_PORT);
+            Session session = jsch.getSession(username, ip, port);
             session.setPassword(password);
             session.setUserInfo(userInfo);
             config.put("StrictHostKeyChecking", "no");
             session.setConfig(config);
-            session.setTimeout(600000);
+            session.setTimeout(6000);
             session.connect();
 
             //打开通道，设置通道类型，和执行的命令
@@ -78,7 +90,7 @@ public class Shell {
                     (channelExec.getInputStream()));
 
 
-            System.out.println("The remote command is :" + command);
+            System.out.println("The remote host "+ip +" command is :" + command);
 
             //接收远程服务器执行命令的结果
             String line;
@@ -116,17 +128,21 @@ public class Shell {
     }
 
     public static void main(final String[] args) {
-        Shell shell = new Shell("172.169.0.89", "root", "cloud@us12");
-        //shell.execute("/opt/jdk1.8.0_152/bin/jps" );
-       // shell.execute("top -bcn 1");
+        Shell shell = new Shell("172.169.0.89", "root", "cloud@us12", 22);
+        //shell.execute("/opt/jdk1.8.0_152/bin/jps" );//记得做软连接
+        // shell.execute("top -bcn 1");//直接top不可以 top试试刷新的
         //      shell.execute("sar -P ALL ");
         //shell.execute("ps  aux ");
-        //shell.execute("ls /" );
-        //   shell.execute("sensors" );
+        // shell.execute("jps" );
+        //shell.execute("hadoop fs -mkdir /hadooptest" );
+        shell.execute("sensors");//.yum install lm_sensors;sensors-detect .sensors 需要安装sensors
         //   shell.execute("du sh *" );
-         shell.execute("jps" );
+        //shell.execute("pwd" );
+        // shell.execute("ps -eLf | grep java |wc -l" );
+        // shell.execute("ps -eLf | grep java " );
 
         ArrayList<String> stdout = shell.getStandardOutput();
+
         for (String str : stdout) {
             System.out.println(str);
         }
