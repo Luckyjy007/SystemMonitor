@@ -18,7 +18,7 @@ public class Shell {
 
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(Shell.class);
     //远程主机的ip地址
-    private String ip;
+    public String ip;
     //远程主机登录用户名
     private String username;
     //远程主机的登录密码
@@ -59,7 +59,7 @@ public class Shell {
      * @param command
      * @return
      */
-    public int execute(final String command) {
+    public ArrayList<String> execute(final String command) {
         int returnCode = 0;
         JSch jsch = new JSch();
         MyUserInfo userInfo = new MyUserInfo();
@@ -90,8 +90,6 @@ public class Shell {
                     (channelExec.getInputStream()));
 
 
-            System.out.println("The remote host "+ip +" command is :" + command);
-
             //接收远程服务器执行命令的结果
             String line;
             while ((line = input.readLine()) != null) {
@@ -115,7 +113,7 @@ public class Shell {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return returnCode;
+        return stdout;
     }
 
     /**

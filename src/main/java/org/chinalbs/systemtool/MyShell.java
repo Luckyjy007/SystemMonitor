@@ -24,7 +24,7 @@ public class MyShell {
         password =shellParams.get("password");
     }
 
-    public static List<Shell> getHostInstances() {
+    private static List<Shell> getHostInstances() {
         hosts = new ArrayList<Shell>(10);
         String[] ips = ipParams.split(",");
         for (String ip : ips) {
@@ -44,7 +44,8 @@ public class MyShell {
         int returnCode = 0;
         hosts = getHostInstances();
    for (Shell shell:hosts){
-       shell.execute(command);
+      Command shellCommand = new Command();
+
        ArrayList<String> standardOutput = shell.getStandardOutput();
        int lineNumber = 0;
        for (String s :standardOutput){
@@ -55,14 +56,8 @@ public class MyShell {
 
    return returnCode; }
 
-   private static String judgeCommand(String command){
 
-       return null;
-   }
 
-    public static void main(String[] args) {
 
-        execute("ps -aux");
-    }
 
 }
